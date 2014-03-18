@@ -1,1 +1,1 @@
-default["packages"] = ["libxslt-devel", "libxml2-devel", "mysql-devel"]
+default["packages"] = ["libyaml", "libxslt-devel", "libxml2-devel", "mysql-devel"]

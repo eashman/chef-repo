@@ -62,7 +62,7 @@ if node[:deploy_users]
 end
 
 include_recipe "rbenv::default"
-include_recipe "rbenv::ruby_build"
+#include_recipe "rbenv::ruby_build"
 
 include_recipe "rails::dependencies"
 
