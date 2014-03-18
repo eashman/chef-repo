@@ -17,17 +17,8 @@
 # limitations under the License.
 #
 
-package "apt-transport-https"
-
-apt_repository "passenger" do
-  uri "https://oss-binaries.phusionpassenger.com/apt/passenger"
-  distribution "precise"
-  components ["main"]
-  key "561F9B9CAC40B2F7"
-  keyserver "keyserver.ubuntu.com"
-end
-
 include_recipe "nginx"
+
 
 template "/etc/nginx/conf.d/passenger.conf" do
   source "passenger.conf.erb"

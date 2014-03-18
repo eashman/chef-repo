@@ -19,7 +19,6 @@
 
 include_recipe "sudo"
 include_recipe "nginx"
-include_recipe "bluepill"
 
 user "deploy" do
   comment "Deploy User"
@@ -35,7 +34,7 @@ end
 
 sudo "deploy" do
   user "deploy"
-  commands ["#{node[:bluepill][:bin]}"]
+  commands ["/etc/init.d/nginx restart"]
   nopasswd true
 end
 
@@ -55,7 +54,7 @@ if node[:deploy_users]
 
     sudo deploy_user do
       user deploy_user
-      commands ["#{node[:bluepill][:bin]}"]
+      commands ["/etc/init.d/nginx restart"]
       nopasswd true
     end
   end
@@ -138,26 +137,6 @@ if node[:active_applications]
       variables :name => app, :deploy_user => deploy_user, :number_of_workers => app_info['number_of_workers'] || 2
     end
 
-    template "#{node[:bluepill][:conf_dir]}/#{app}.pill" do
-      mode 0644
-      source "bluepill_unicorn.rb.erb"
-      variables :name => app, :deploy_user => deploy_user, :app_env => app_env, :rails_env => rails_env
-    end
-
-    bluepill_service app do
-      action [:enable, :load, :start]
-    end
-
-    template "/etc/init/#{app}.conf" do
-      mode 0644
-      source "bluepill_upstart.erb"
-      variables :name => app
-    end
-
-    service "#{app}" do
-      provider Chef::Provider::Service::Upstart
-      action [ :enable ]
-    end
 
     nginx_site "#{app}.conf" do
       action :enable

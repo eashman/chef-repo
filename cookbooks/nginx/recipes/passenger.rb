@@ -26,7 +26,7 @@ packages.each do |name|
   package name
 end
 
-gem_package 'rake'
+#gem_package 'rake'
 
 gem_package 'passenger' do
   action     :install
